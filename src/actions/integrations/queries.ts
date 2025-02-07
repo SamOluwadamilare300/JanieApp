@@ -1,6 +1,5 @@
-'use server'
 import { client } from '@/lib/prisma'
-import { INTEGRATIONS } from '@prisma/client'
+import { INTEGRATIONS, Prisma } from '@prisma/client'
 
 export const updateIntegration = async (
   token: string,
@@ -16,8 +15,6 @@ export const updateIntegration = async (
   })
 }
 
-
-
 export const getIntegration = async (clerkId: string) => {
   return await client.user.findUnique({
     where: {
@@ -26,13 +23,12 @@ export const getIntegration = async (clerkId: string) => {
     select: {
       integrations: {
         where: {
-          name: 'INSTAGRAM',
+          name: INTEGRATIONS.INSTAGRAM, // Ensure the name field matches the enum
         },
       },
     },
   })
 }
-
 
 export const createIntegration = async (
   clerkId: string,
@@ -47,10 +43,11 @@ export const createIntegration = async (
     data: {
       integrations: {
         create: {
+          name: INTEGRATIONS.INSTAGRAM,
           token,
           expiresAt: expire,
-          instagramId: igId,
-        },
+          instagramId: igId ?? null, 
+        }as Prisma.IntegrationsCreateWithoutUserInput,
       },
     },
     select: {
@@ -59,4 +56,3 @@ export const createIntegration = async (
     },
   })
 }
-

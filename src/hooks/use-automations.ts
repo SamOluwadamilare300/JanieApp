@@ -1,3 +1,10 @@
+import { useMutationData } from './use-mutation-data'
+import { useRouter } from 'next/navigation'
+import { useEffect, useRef, useState } from 'react'
+import { AppDispatch, useAppSelector } from '@/redux/stores'
+import { useDispatch } from 'react-redux'
+import { TRIGGER } from '@/redux/slices/automations'
+import useZodForm from './use-zod-Form'
 import { z } from 'zod'
 import {
   createAutomations,
@@ -8,15 +15,6 @@ import {
   saveTrigger,
   updateAutomationName,
 } from '@/actions/automations'
-import { useMutationData } from './use-mutation-data'
-import { useRouter } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
-
-import { AppDispatch,  useAppSelector } from '@/redux/stores'
-import { useDispatch } from 'react-redux'
-import { TRIGGER } from '@/redux/slices/automations'
-import useZodForm from './use-zod-Form'
-
 
 export const useCreateAutomation = (id?: string) => {
   const { isPending, mutate } = useMutationData(
@@ -59,7 +57,7 @@ export const useEditAutomation = (automationId: string) => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [])
+  }, [mutate])
 
   return {
     edit,
