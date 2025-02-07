@@ -28,7 +28,7 @@ import { AutomationDuoToneBlue,
     {
       name: 'Free Plan',
       description: 'Perfect for getting started',
-      price: '$0',
+      price: '#0',
       features: [
         'Boost engagement with target responses',
         'Automate comment replies to enhance audience interaction',

@@ -90,7 +90,6 @@
 //    return { status: 500 }
 //  }
 // }
-
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { createUser, findUser, updateSubscription } from "./queries";
@@ -149,6 +148,7 @@ export const onBoardUser = async () => {
    
 }
 
+
 export const onUserInfo = async () => {
   const user = await onCurrentUser()
   try {
@@ -160,4 +160,51 @@ export const onUserInfo = async () => {
     return { status: 500 }
   }
 }
+
+export const onSubscribe = async (session_id: string) => {
+  const user = await onCurrentUser(); // Retrieve the current user
+  try {
+    // Placeholder for Flutterwave initialization
+    console.log('Subscription session:', session_id);
+
+    const flutterwaveConfig = {
+      public_key:'FLWPUBK_TEST-93bc3cf0fcae86e2b33e17aaecd82c72-X',
+      tx_ref: `tx_${Date.now()}`,
+      amount: 100, // Example amount
+      currency: 'USD',
+      payment_options: 'card',
+      customizations: {
+        title: 'Your Service',
+        description: 'Upgrade to PRO Plan',
+        logo: 'https://your-logo-url.com/logo.png',
+      },
+    };
+
+    // Simulate Flutterwave interaction
+    const result = await processFlutterwavePayment(flutterwaveConfig); // Implement this function
+
+    if (result.status === 'success') {
+      const subscribed = await updateSubscription(user.id, {
+        customerId: result.transaction_id,
+        plan: 'PRO',
+      });
+
+      if (subscribed) return { status: 200 };
+      return { status: 401 };
+    }
+
+    return { status: 400 }; // Payment failed
+  } catch (error) {
+    console.error(error);
+    return { status: 500 };
+  }
+};
+
+// Placeholder for processing the Flutterwave payment (mock logic)
+const processFlutterwavePayment = async (config: any) => {
+  // Replace this with Flutterwave's payment API or SDK logic
+  console.log('Flutterwave payment initialized with:', config);
+  return { status: 'success', transaction_id: 'sample-transaction-id' }; // Mock successful response
+};
+
 

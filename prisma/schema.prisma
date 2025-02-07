@@ -37,15 +37,13 @@ model Subscription {
 
 model Integrations {
   id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name        INTEGRATIONS 
+  name        INTEGRATIONS @default(INSTAGRAM)
   createdAt   DateTime     @default(now())
   User        User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String?      @db.Uuid
   token       String       @unique
   expiresAt   DateTime?
   instagramId String?      @unique
-  facebookId  String       @unique
-  twitterId   String       @unique
 }
 
 model Automation {
@@ -116,8 +114,6 @@ enum SUBSCRIPTION_PLAN {
 
 enum INTEGRATIONS {
   INSTAGRAM
-  FACEBOOK
-  TWITTER 
 }
 
 enum MEDIATYPE {
