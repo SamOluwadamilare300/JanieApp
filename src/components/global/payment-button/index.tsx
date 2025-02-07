@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { useSubscription } from '@/hooks/use-subscription'
 import { CreditCardIcon, Loader2 } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
-import { FlutterWaveButton, closePaymentModal } from 'flutterwave-react-v3'
+import { FlutterWaveButton } from 'flutterwave-react-v3'
 import { toast } from 'sonner'
 import { onUserInfo } from '@/actions/user'
 
