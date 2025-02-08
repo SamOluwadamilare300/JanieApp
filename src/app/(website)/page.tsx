@@ -8,7 +8,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { CheckCircle } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Home() {
@@ -23,9 +22,10 @@ export default function Home() {
         'Turn followers into customers with targeted messaging',
       ],
       cta: 'Get Started',
+      href: '/sign-up',
     },
     {
-      name: 'Smart AI Plan',
+      name: 'Premium',
       description: 'Advanced features for power users',
       price: '29k',
       features: [
