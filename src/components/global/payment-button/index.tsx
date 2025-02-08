@@ -1,26 +1,31 @@
 import { Button } from '@/components/ui/button'
-import { useSubscription } from '@/hooks/use-subscription'
-import { CreditCardIcon, Loader2 } from 'lucide-react'
+import { Loader2 } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
-import { FlutterWaveButton, closePaymentModal } from 'flutterwave-react-v3';
+import { closePaymentModal, FlutterWaveButton } from 'flutterwave-react-v3'
 import { toast } from 'sonner'
 import { onUserInfo } from '@/actions/user'
+
 
 type Props = {}
 
 const PaymentButton = (props: Props) => {
-  const { isProcessing } = useSubscription()
+ 
+  ///IR WILLL NE INITIATE WITH USER-QUERIES SO THAT
+  //  WHEN THE PAYMENT IS DONE USER HAVE ACCESS TO THE PREMIUM SERVICE
   
   const [userEmail, setUserEmail] = useState('')
   const [userName, setUserName] = useState('')
+  const [userPhone, setUserPhone] = useState('') 
 
   // Fetch user data when component mounts
   useEffect(() => {
     const fetchUserData = async () => {
       const response = await onUserInfo()
       if (response.status === 200 && response.data) {
-        setUserEmail(response.data.email) // assuming the response contains email
-        setUserName(`${response.data.firstname} ${response.data.lastname}`) // assuming first and last name are available
+        setUserEmail(response.data.email)
+        setUserName(`${response.data.firstname} ${response.data.lastname}`) 
+        setUserPhone('') // Default phone number
+
       }
     }
 
@@ -36,7 +41,8 @@ const PaymentButton = (props: Props) => {
     payment_options: 'card,mobilemoney,ussd',
     customer: {
       email: userEmail, 
-      name: userName,  
+      name: userName, 
+      phone_number: userPhone,  
     },
     customizations: {
       title: 'Janie Automation',
@@ -56,15 +62,16 @@ const PaymentButton = (props: Props) => {
     }
   }
 
+
   return (
     <Button>
       {/* Flutterwave payment button */}
       <FlutterWaveButton
         {...fwConfig}
-        disabled={isProcessing || !userEmail || !userName} // Disable button if email or name is missing
+     
         className="bg-gradient-to-br text-white rounded-full from-[#6d60a3] via-[#9434E6] font-bold to-[#CC3BD4]"
       >
-        {isProcessing ? <Loader2 className="animate-spin" /> : <CreditCardIcon />}
+        {<Loader2 className="animate-spin" />}
       </FlutterWaveButton>
     </Button>
   )

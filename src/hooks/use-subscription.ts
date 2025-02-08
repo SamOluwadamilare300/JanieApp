@@ -1,18 +1,25 @@
-import axios from 'axios'
-import { useState } from 'react'
-
-export const useSubscription = () => {
-  const [isProcessing, setIsProcessing] = useState(false)
-  const onSubscribe = async () => {
-    setIsProcessing(true)
-    const response = await axios.get('/api/payment')
-    if (response.data.status === 200) {
-      return (window.location.href = `${response.data.session_url}`)
-    }
-
-    setIsProcessing(false)
-  }
-
-  return { onSubscribe, isProcessing }
+// /actions/subscription.ts
+type SubscriptionUpdateParams = {
+  transactionId: string;
+  amount: number;
+  transactionRef: string;
+  status: 'active' | 'inactive';
+  plan: string;
 }
 
+export async function updateSubscription(params: SubscriptionUpdateParams) {
+  try {
+    const response = await fetch('/api/subscription/update', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(params),
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Error updating subscription:', error);
+    throw error;
+  }
+}
