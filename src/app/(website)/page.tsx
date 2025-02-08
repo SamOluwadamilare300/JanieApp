@@ -13,9 +13,9 @@ import Link from 'next/link';
 export default function Home() {
   const plans = [
     {
-      name: 'Free Plan',
+      name: 'Free',
       description: 'Perfect for getting started',
-      price: '#0',
+      price: '0k',
       features: [
         'Boost engagement with target responses',
         'Automate comment replies to enhance audience interaction',

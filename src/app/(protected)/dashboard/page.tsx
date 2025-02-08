@@ -14,8 +14,8 @@ const Page = async (props: Props) => {
   }
 
   if (user.status === 200 || user.status === 201) {
-    // const firstname = user.data?.firstname ?? '' 
-    // const lastname = user.data?.lastname ?? ''
+    const firstname = user.data?.firstname ?? '' 
+    const lastname = user.data?.lastname ?? ''
     return redirect(`/dashboard/`)
   }
 
